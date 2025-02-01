@@ -8,7 +8,8 @@ import java.util.HashMap;
 public enum BotCommand {
     START("/start"),
     REMIND("/remind"),
-    ALL("/all");
+    ALL("/all"),
+    NEXT("/next");
 
     private final String commandText;
     private static final HashMap<String, BotCommand> BOT_COMMANDS;

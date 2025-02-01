@@ -26,7 +26,7 @@ public class Parser {
             if (msgText.contains(" ")) {
                 result = parseDateTime(msgText);
             } else {
-                result = parseDate(msgText);
+                result = parseDateTime(msgText + " 00:00");
             }
         } catch (Exception e) {
             return LocalDateTime.now().plusYears(1);
@@ -42,8 +42,8 @@ public class Parser {
         return LocalDateTime.parse(msgText, formatter);
     }
 
-    private LocalDateTime parseDate(String msgText) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return LocalDateTime.parse(msgText + " 00:00", formatter);
-    }
+//    private LocalDateTime parseDate(String msgText) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+//        return LocalDateTime.parse(msgText, formatter);
+//    }
 }

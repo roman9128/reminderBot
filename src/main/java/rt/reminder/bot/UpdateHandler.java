@@ -85,19 +85,13 @@ public class UpdateHandler {
                 if (message.isCommand()) {
                     return executor.execute(msgText, userID);
                 } else {
-                    return SendMessage.builder()
-                            .chatId(userID)
-                            .text(messageTemplates.getDescription())
-                            .build();
+                    return messageTemplates.sendDescription(userID);
                 }
             }
             case WRITING_REMINDER -> {
                 tempReminders.put(userID, new Reminder(userID, msgText));
                 userService.setNewStatus(userID, UserStatus.WRITING_DEADLINE);
-                return SendMessage.builder()
-                        .chatId(userID)
-                        .text(messageTemplates.getDeadlineDesc())
-                        .build();
+                return messageTemplates.sendDeadlineDesc(userID);
             }
             case WRITING_DEADLINE -> {
                 LocalDateTime deadline = parser.parseDeadline(msgText);
@@ -105,7 +99,7 @@ public class UpdateHandler {
                 userService.setNewStatus(userID, UserStatus.WRITING_PERIOD);
                 return SendMessage.builder()
                         .chatId(userID)
-                        .text(messageTemplates.getRemindTimeDesc())
+                        .text(messageTemplates.getRemindTime())
                         .build();
             }
             case WRITING_PERIOD -> {

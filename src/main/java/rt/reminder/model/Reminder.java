@@ -5,12 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 @Data
 @NoArgsConstructor
@@ -26,14 +27,14 @@ public class Reminder {
     LocalDateTime deadline;
     Integer remindTimes;
     Long periodBetweenReminders;
-    Boolean toBeDeleted;
+    Boolean finished;
 
     public Reminder(Long userID, String reminderText) {
         this.userID = userID;
         this.reminderText = reminderText;
         this.startTime = LocalDateTime.now();
 //        this.nextRemindTime = LocalDateTime.ofInstant(Instant.ofEpochSecond((startTime.toEpochSecond(ZoneOffset.UTC) + deadline.toEpochSecond(ZoneOffset.UTC)) / 2), ZoneId.systemDefault());
-        this.toBeDeleted = false;
+        this.finished = false;
     }
 
     public void setParametersOnRemindTimes(Integer remindTimes) {
@@ -42,18 +43,24 @@ public class Reminder {
         this.nextRemindTime = startTime.plusSeconds(periodBetweenReminders);
     }
 
+    public String getStringDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
+        return dateTime.format(formatter);
+    }
+
     @Override
     public String toString() {
         return "Напоминание:" +
                 System.lineSeparator() +
                 reminderText +
                 System.lineSeparator() +
-                "время начала: " + startTime +
+                "время начала: " + getStringDateTime(startTime) +
                 System.lineSeparator() +
-                "нужно успеть до: " + deadline +
+                "нужно успеть до: " + getStringDateTime(deadline) +
                 System.lineSeparator() +
-                "следующее напоминание: " + nextRemindTime +
+                "следующее напоминание: " + getStringDateTime(nextRemindTime) +
                 System.lineSeparator() +
-                "осталось напоминаний: " + remindTimes;
+                "осталось напоминаний: " + remindTimes +
+                System.lineSeparator();
     }
 }

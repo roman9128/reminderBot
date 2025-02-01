@@ -31,6 +31,9 @@ public class CommandExecutor {
             case ALL -> {
                 return all(userID);
             }
+            case NEXT -> {
+                return next(userID);
+            }
             default -> {
                 return null;
             }
@@ -49,7 +52,7 @@ public class CommandExecutor {
         userService.setNewStatus(userID, UserStatus.WRITING_REMINDER);
         return SendMessage.builder()
                 .chatId(userID)
-                .text(messageTemplates.getRemindDesc())
+                .text(messageTemplates.getRemind())
                 .build();
     }
 
@@ -62,6 +65,13 @@ public class CommandExecutor {
         return SendMessage.builder()
                 .chatId(userID)
                 .text(builder.toString())
+                .build();
+    }
+
+    private SendMessage next(Long userID) {
+        return SendMessage.builder()
+                .chatId(userID)
+                .text(repo.findFirstByUserIDOrderByNextRemindTimeAsc(userID).toString())
                 .build();
     }
 }

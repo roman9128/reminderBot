@@ -17,5 +17,4 @@ public class ReminderApplication {
 
         SpringApplication.run(ReminderApplication.class, args);
     }
-
 }
