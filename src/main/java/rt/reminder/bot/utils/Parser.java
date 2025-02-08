@@ -7,15 +7,25 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class Parser {
-    public Integer parseInteger(String msgText) {
+    public Integer parseIntegerOrReturnOne(String msgText) {
         Integer result;
         try {
             result = Integer.parseInt(msgText);
         } catch (NumberFormatException e) {
-            result = 0;
+            result = 1;
         }
-        if (result < 0) {
-            result = 0;
+        if (result < 1) {
+            result = 1;
+        }
+        return result;
+    }
+
+    public Long parseLongOrReturnMinusOne(String text) {
+        Long result;
+        try {
+            result = Long.parseLong(text);
+        } catch (NumberFormatException e) {
+            result = -1L;
         }
         return result;
     }
@@ -41,9 +51,4 @@ public class Parser {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         return LocalDateTime.parse(msgText, formatter);
     }
-
-//    private LocalDateTime parseDate(String msgText) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-//        return LocalDateTime.parse(msgText, formatter);
-//    }
 }
